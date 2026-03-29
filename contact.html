@@ -12,11 +12,44 @@
   <a href="/contact.html">Contact</a>
 </nav>
 
-<h1>📩 Contact / Order</h1>
+<h1>📩 F3D AI Order System</h1>
 
-<p>If you see this page → contact works ✅</p>
+<div class="chat-box" id="chat"></div>
 
-<textarea placeholder="Describe your 3D print idea"></textarea>
+<div class="input-area">
+  <input id="userInput" placeholder="Type your message...">
+  <button onclick="send()">Send</button>
+</div>
 
+<script>
+async function send() {
+    let input = document.getElementById("userInput").value;
+    let chat = document.getElementById("chat");
+
+    if(input.trim() === "") return;
+
+    chat.innerHTML += `<div class="user-msg">${input}</div>`;
+    document.getElementById("userInput").value = "";
+
+    chat.innerHTML += `<div class="ai-msg">🤖 Thinking...</div>`;
+
+    let response = await fetch("https://f3d-ai.onrender.com/ai", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ message: input })
+    });
+
+    let data = await response.json();
+
+    chat.innerHTML += `<div class="ai-msg">${data.reply}</div>`;
+}
+</script>
+document.getElementById("userInput").addEventListener("keypress", function(event) {
+    if (event.key === "Enter") {
+        send();
+    }
+});
 </body>
 </html>
