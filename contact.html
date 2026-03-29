@@ -1,8 +1,69 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Contact - F3D</title>
-  <link rel="stylesheet" href="style.css">
+  <title>F3D AI Orders</title>
+  <style>
+    body {
+      font-family: Arial;
+      margin: 0;
+      background: #f4f4f4;
+    }
+
+    nav {
+      background: black;
+      padding: 10px;
+    }
+
+    nav a {
+      color: white;
+      margin-right: 10px;
+      text-decoration: none;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 700px;
+      margin: 20px auto;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+    }
+
+    .chat {
+      height: 300px;
+      overflow-y: auto;
+      border: 1px solid #ddd;
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+
+    .msg-user { text-align:right; margin:5px; }
+    .msg-ai { text-align:left; margin:5px; }
+
+    .row {
+      display: flex;
+      gap: 10px;
+    }
+
+    input, button {
+      padding: 10px;
+    }
+
+    input {
+      flex: 1;
+    }
+
+    .pay {
+      margin-top: 10px;
+      display: block;
+      background: green;
+      color: white;
+      padding: 10px;
+      text-align: center;
+      text-decoration: none;
+      border-radius: 5px;
+    }
+  </style>
 </head>
 
 <body>
@@ -12,44 +73,62 @@
   <a href="/contact.html">Contact</a>
 </nav>
 
-<h1>📩 F3D AI Order System</h1>
+<div class="container">
 
-<div class="chat-box" id="chat"></div>
+<h2>🤖 F3D AI Order System</h2>
 
-<div class="input-area">
-  <input id="userInput" placeholder="Type your message...">
+<!-- CHAT -->
+<div class="chat" id="chat"></div>
+
+<div class="row">
+  <input id="input" placeholder="Describe your 3D print..." />
   <button onclick="send()">Send</button>
 </div>
 
+<!-- UPLOAD -->
+<p>📷 Upload image / STL:</p>
+<input type="file" id="file">
+
+<!-- PAYMENT -->
+<a class="pay" href="https://your-payment-link.com" target="_blank">
+💳 Pay Here
+</a>
+
+<!-- ORDER ID -->
+<p id="order">Order ID: -</p>
+
+</div>
+
 <script>
+let orderId = "F3D-" + Math.floor(Math.random()*99999);
+document.getElementById("order").innerText = "Order ID: " + orderId;
+
 async function send() {
-    let input = document.getElementById("userInput").value;
-    let chat = document.getElementById("chat");
+  let input = document.getElementById("input");
+  let chat = document.getElementById("chat");
 
-    if(input.trim() === "") return;
+  if(input.value.trim() === "") return;
 
-    chat.innerHTML += `<div class="user-msg">${input}</div>`;
-    document.getElementById("userInput").value = "";
+  chat.innerHTML += `<div class='msg-user'>🧑 ${input.value}</div>`;
 
-    chat.innerHTML += `<div class="ai-msg">🤖 Thinking...</div>`;
+  let msg = input.value;
+  input.value = "";
 
-    let response = await fetch("https://f3d-ai.onrender.com/ai", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ message: input })
-    });
+  // SIMPLE PRICE ESTIMATE
+  let price = 10 + (msg.length * 0.5);
 
-    let data = await response.json();
+  chat.innerHTML += `<div class='msg-ai'>🤖 Estimated price: €${price.toFixed(2)}</div>`;
 
-    chat.innerHTML += `<div class="ai-msg">${data.reply}</div>`;
+  chat.innerHTML += `<div class='msg-ai'>📦 Order saved: ${orderId}</div>`;
 }
-</script>
-document.getElementById("userInput").addEventListener("keypress", function(event) {
-    if (event.key === "Enter") {
-        send();
-    }
+
+// ENTER KEY SUPPORT
+document.addEventListener("keydown", function(e){
+  if(e.key === "Enter"){
+    send();
+  }
 });
+</script>
+
 </body>
 </html>
