@@ -1,0 +1,33 @@
+<h3 id="typing"></h3>
+
+<script>
+
+async function send() {
+    let input = document.getElementById("userInput").value;
+    let chat = document.getElementById("chat");
+
+    if(input.trim() === "") return;
+
+    chat.innerHTML += `<div class="user-msg">${input}</div>`;
+    document.getElementById("userInput").value = "";
+
+    chat.innerHTML += `<div class="ai-msg">🤖 Thinking...</div>`;
+
+    // send to backend AI (we will build next step)
+    let response = await fetch(https://ai-1-zy6f.onrender.com, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ message: input })
+    });
+
+    let data = await response.json();
+
+    // remove "thinking"
+    document.querySelectorAll(".ai-msg")[document.querySelectorAll(".ai-msg").length - 1].remove();
+
+    chat.innerHTML += `<div class="ai-msg">${data.reply}</div>`;
+}
+
+</script>

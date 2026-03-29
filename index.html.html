@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>F3D Labs</title>
+
+<style>
+body {
+    margin:0;
+    font-family: Arial;
+    background:white;
+    color:#111;
+}
+
+nav {
+    position:fixed;
+    top:0;
+    width:100%;
+    background:white;
+    border-bottom:1px solid #eee;
+    display:flex;
+    justify-content:center;
+    gap:20px;
+    padding:15px;
+}
+
+nav a {
+    text-decoration:none;
+    color:black;
+    font-weight:bold;
+}
+
+.hero {
+    padding:120px 20px 60px;
+    text-align:center;
+}
+
+.hero h1 {
+    font-size:45px;
+}
+
+.section {
+    max-width:900px;
+    margin:auto;
+    padding:40px 20px;
+    line-height:1.6;
+}
+
+.card {
+    border:1px solid #eee;
+    padding:20px;
+    border-radius:12px;
+    margin-top:20px;
+}
+</style>
+</head>
+
+<body>
+<div class="bg-circle" style="top:100px;left:50px;"></div>
+<div class="bg-circle" style="bottom:100px;right:80px;"></div>
+<script>
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if(entry.isIntersecting){
+            entry.target.classList.add("show");
+        }
+    });
+});
+
+document.querySelectorAll(".card").forEach((el) => {
+    el.classList.add("hidden");
+    observer.observe(el);
+});
+</script>
+<nav>
+    <a href="index.html">Home</a>
+    <a href="order.html">Order</a>
+    <a href="contact.html">Contact</a>
+</nav>
+
+<div class="hero">
+    <h1>F3D Labs</h1>
+    <p>High-quality custom 3D printing services for prototypes, parts, and creative models.</p>
+</div>
+
+<div class="section">
+
+    <div class="card">
+        <h2>🧠 About Us</h2>
+        <p>
+        F3D Labs specializes in custom 3D printing. We turn digital ideas into real physical objects with precision and detail.
+        </p>
+    </div>
+
+    <div class="card">
+        <h2>⚙️ What We Offer</h2>
+        <p>✔ Custom 3D prints</p>
+        <p>✔ Prototypes & engineering parts</p>
+        <p>✔ Keychains & creative designs</p>
+        <p>✔ Fast and reliable service</p>
+    </div>
+
+</div>
+
+</body>
+</html>
